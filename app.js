@@ -526,7 +526,7 @@
   function showLight() {
     phase = "light";
     if (reelTween) reelTween.pause();
-    say("Catch the light.");
+    say("Three lives. Catch as many good tidings as you can.");
     topbar.classList.add("is-hidden");
     gsap.to("#scene-intro, #scene-cake, #scene-letter, #scene-reel", { autoAlpha: 0, duration: reduce ? 0 : 0.35 });
     gsap.to("#scene-light", {

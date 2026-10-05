@@ -1,5 +1,4 @@
 (() => {
-  const WORDS = ["light", "gold", "warm", "shine", "glow"];
   const canvas = document.getElementById("playfield");
   const ctx = canvas.getContext("2d");
   const title = document.getElementById("lightTitle");
@@ -36,6 +35,7 @@
   let spawnIn = 0;
   let shake = 0;
   let invuln = 0;
+  let sliceTimer = 0;
 
   function resize() {
     const viewport = window.visualViewport;
@@ -106,11 +106,11 @@
       kind,
       x: 24 + Math.random() * Math.max(40, w - 48),
       y: -28,
-      r: kind === "shade" ? 14 : 18,
+      r: kind === "shade" ? 14 : 26,
       vy: (kind === "shade" ? 145 : 92) * diff * (0.85 + Math.random() * 0.3),
       seed: Math.random() * 10,
       wob: 40 + Math.random() * 70,
-      word: WORDS[(Math.random() * WORDS.length) | 0],
+      word: "good tidings",
       dead: false
     });
   }
@@ -119,7 +119,7 @@
     combo += 1;
     comboLeft = 1.8;
     score += 10 + (combo - 1) * 2;
-    popup(orb.x, orb.y - 8, combo > 1 ? `+${10 + (combo - 1) * 2}` : orb.word);
+    popup(orb.x, orb.y - 18, "good tidings");
     burst(orb.x, orb.y, "#ffe7a8", 14);
     if (window.CosmosSound) window.CosmosSound.blip(Math.min(combo, 10));
     orb.dead = true;
@@ -139,14 +139,24 @@
     if (lives <= 0) endRun();
   }
 
+  function goSlice() {
+    window.clearTimeout(sliceTimer);
+    sliceTimer = 0;
+    window.location.href = "rume.html";
+  }
+
   function endRun() {
     mode = "over";
     document.getElementById("overScore").textContent = String(score);
     over.hidden = false;
     updateHud();
+    window.clearTimeout(sliceTimer);
+    sliceTimer = window.setTimeout(goSlice, 4200);
   }
 
   function startRun() {
+    window.clearTimeout(sliceTimer);
+    sliceTimer = 0;
     resize();
     reset();
     mode = "play";
@@ -264,6 +274,12 @@
       ctx.beginPath();
       ctx.arc(orb.x, orb.y, orb.r + 16, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = "#4a2a12";
+      ctx.font = "700 11px Outfit, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("good", orb.x, orb.y - 7);
+      ctx.fillText("tidings", orb.x, orb.y + 7);
     });
     particles.forEach((bit) => {
       const t = 1 - bit.age / bit.life;
@@ -330,6 +346,8 @@
   }
 
   function leave() {
+    window.clearTimeout(sliceTimer);
+    sliceTimer = 0;
     mode = "off";
     cancelAnimationFrame(raf);
     raf = 0;
@@ -349,9 +367,7 @@
   window.addEventListener("keyup", (event) => keys.delete(event.code));
   document.getElementById("startLight").addEventListener("click", startRun);
   document.getElementById("replayLight").addEventListener("click", startRun);
-  document.getElementById("goSlice").addEventListener("click", () => {
-    window.location.href = "rume.html";
-  });
+  document.getElementById("goSlice").addEventListener("click", goSlice);
   window.addEventListener("resize", () => {
     if (mode !== "off") resize();
   });

@@ -754,7 +754,7 @@ h1, h2 {
 }
 
 .light-card p {
-  max-width: 22rem;
+  max-width: 26rem;
   margin: 0 0 0.8rem;
   color: var(--muted);
   font-weight: 300;
