@@ -523,14 +523,31 @@
     startReel();
   }
 
+  function showLight() {
+    phase = "light";
+    if (reelTween) reelTween.pause();
+    say("Catch the light.");
+    topbar.classList.add("is-hidden");
+    gsap.to("#scene-intro, #scene-cake, #scene-letter, #scene-reel", { autoAlpha: 0, duration: reduce ? 0 : 0.35 });
+    gsap.to("#scene-light", {
+      autoAlpha: 1,
+      duration: reduce ? 0 : 0.45,
+      overwrite: true,
+      onComplete() {
+        window.CosmosLight.enter();
+      }
+    });
+  }
+
   function resetNight() {
     if (reelTween) reelTween.kill();
+    if (window.CosmosLight) window.CosmosLight.leave();
     sound.stopWhoosh();
     resetVisuals();
     topbar.classList.remove("is-hidden");
     const light = document.getElementById("lightbox");
     light.hidden = true;
-    gsap.set("#scene-cake, #scene-letter, #scene-reel", { autoAlpha: 0, y: 0 });
+    gsap.set("#scene-cake, #scene-letter, #scene-reel, #scene-light", { autoAlpha: 0, y: 0 });
     gsap.set("#scene-intro", { autoAlpha: 1, y: 0 });
     phase = "intro";
     playIntro();
@@ -556,13 +573,9 @@
 
   document.getElementById("begin").addEventListener("click", begin);
   document.getElementById("openReel").addEventListener("click", showReel);
-  document.getElementById("playRume").addEventListener("click", () => {
-    window.location.href = "rume.html";
-  });
+  document.getElementById("catchLight").addEventListener("click", showLight);
   document.getElementById("reelBack").addEventListener("click", resetNight);
-  document.getElementById("skip").addEventListener("click", () => {
-    window.location.href = "rume.html";
-  });
+  document.getElementById("skip").addEventListener("click", showLight);
 
   const cakeScene = document.getElementById("scene-cake");
   function startBlow(event) {
@@ -608,7 +621,7 @@
     },
     (context) => {
       reduce = !!context.conditions.reduce;
-      gsap.set("#scene-cake, #scene-letter, #scene-reel", { autoAlpha: 0 });
+      gsap.set("#scene-cake, #scene-letter, #scene-reel, #scene-light", { autoAlpha: 0 });
       gsap.set("#scene-intro", { autoAlpha: 1 });
       const intro = playIntro();
       return () => intro.kill();

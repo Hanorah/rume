@@ -17,7 +17,7 @@
 
   <header id="topbar">
     <p>For Cosmos</p>
-    <button id="skip" type="button">Skip to Rume</button>
+    <button id="skip" type="button">Catch the light</button>
   </header>
   <p id="live" class="sr-only" aria-live="polite"></p>
 
@@ -178,8 +178,34 @@
       <div class="track" id="track"></div>
     </div>
     <div class="reel-actions">
-      <button id="playRume" class="gold-btn" type="button">Play Rume</button>
+      <button id="catchLight" class="gold-btn" type="button">Catch the light</button>
       <button id="reelBack" class="text-btn" type="button">Back to the candles</button>
+    </div>
+  </section>
+
+  <section id="scene-light" class="scene" aria-label="Catch the light">
+    <canvas id="playfield"></canvas>
+    <div class="light-hud" id="lightHud" hidden>
+      <div>
+        <span>Score</span>
+        <strong id="hudScore">0</strong>
+      </div>
+      <div>
+        <span>Lives</span>
+        <strong id="hudLives" aria-label="3 lives"><em></em><em></em><em></em></strong>
+      </div>
+    </div>
+    <div id="lightTitle" class="light-card">
+      <p class="kicker">For Rume</p>
+      <h2>Catch the light</h2>
+      <p>Move through the gold. Leave the dark alone.</p>
+      <button id="startLight" class="gold-btn" type="button">Play</button>
+    </div>
+    <div id="lightOver" class="light-card" hidden>
+      <p class="kicker">Score</p>
+      <p class="light-score" id="overScore">0</p>
+      <button id="replayLight" class="gold-btn" type="button">Play again</button>
+      <button id="goSlice" class="gold-btn" type="button">Slice it</button>
     </div>
   </section>
 
@@ -189,6 +215,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="game.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

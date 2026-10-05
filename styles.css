@@ -125,7 +125,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   -webkit-overflow-scrolling: touch;
 }
 
-#scene-cake, #scene-letter, #scene-reel {
+#scene-cake, #scene-letter, #scene-reel, #scene-light {
   opacity: 0;
   visibility: hidden;
 }
@@ -659,6 +659,115 @@ h1, h2 {
   gap: 0.35rem;
   overflow: hidden;
   padding-bottom: 1.2rem;
+}
+
+#scene-light {
+  padding: 0;
+  display: block;
+  overflow: hidden;
+  background: #07060c;
+}
+
+#playfield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.light-hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  padding:
+    max(0.9rem, env(safe-area-inset-top))
+    max(1rem, env(safe-area-inset-right))
+    0
+    max(1rem, env(safe-area-inset-left));
+  pointer-events: none;
+}
+
+.light-hud[hidden] { display: none; }
+
+.light-hud span {
+  display: block;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  color: rgba(255, 246, 232, 0.55);
+}
+
+.light-hud strong {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 5vw, 1.8rem);
+  font-weight: 500;
+}
+
+#hudLives {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+#hudLives em {
+  width: 10px;
+  height: 16px;
+  border-radius: 50% 50% 45% 45%;
+  background: radial-gradient(circle at 50% 70%, #fff1c4, #ff9a2a 60%, transparent 72%);
+  box-shadow: 0 0 8px rgba(255, 160, 50, 0.8);
+}
+
+#hudLives em.off {
+  opacity: 0.18;
+  filter: grayscale(1);
+  box-shadow: none;
+}
+
+.light-card {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 1.5rem;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 18%, rgba(240, 195, 106, 0.18), transparent 48%),
+    rgba(7, 6, 12, 0.55);
+}
+
+.light-card[hidden] { display: none; }
+
+.light-card h2 {
+  font-style: italic;
+  font-size: clamp(3rem, 12vw, 6rem);
+  line-height: 0.9;
+  color: #f6e2b8;
+}
+
+.light-card p {
+  max-width: 22rem;
+  margin: 0 0 0.8rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.light-card .gold-btn { margin-top: 0.35rem; }
+
+.light-score {
+  font-family: var(--display);
+  font-size: clamp(3.2rem, 12vw, 5rem) !important;
+  color: var(--cream) !important;
+  line-height: 1;
+  margin: 0.2rem 0 0.8rem !important;
 }
 
 .film {
