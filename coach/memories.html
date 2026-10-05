@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memories — Coach Sam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0b1220;
+      --panel: #121c2e;
+      --gold: #e8b84a;
+      --gold-soft: #f0d48a;
+      --mist: rgba(255, 255, 255, 0.78);
+      --line: rgba(255, 255, 255, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      color: #fff;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232, 184, 74, 0.18), transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(40, 90, 140, 0.25), transparent 50%),
+        linear-gradient(165deg, #0b1220 0%, #152238 45%, #0d1626 100%);
+      overflow-x: hidden;
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      background:
+        radial-gradient(circle at 50% 30%, rgba(232, 184, 74, 0.15), transparent 45%),
+        var(--ink);
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    .gate.is-gone {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 12vw, 6.5rem);
+      letter-spacing: 0.06em;
+      line-height: 0.92;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+
+    .gate p {
+      max-width: 28rem;
+      color: var(--mist);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .gate-btn,
+    .next-game {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.12em;
+      padding: 0.95rem 2.2rem;
+      border-radius: 999px;
+      color: #111;
+      background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+      box-shadow: 0 12px 30px rgba(232, 184, 74, 0.28);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .gate-btn:hover,
+    .next-game:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px rgba(232, 184, 74, 0.38);
+    }
+
+    .stage {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 2rem 1.25rem 5rem;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .stage.is-live {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .now-playing {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      padding: 1rem 1.2rem;
+      background: rgba(18, 28, 46, 0.85);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 28px;
+      width: 28px;
+      flex-shrink: 0;
+    }
+
+    .eq span {
+      width: 4px;
+      background: var(--gold);
+      border-radius: 2px;
+      animation: bounce 0.9s ease-in-out infinite;
+      height: 40%;
+    }
+
+    .eq span:nth-child(2) { animation-delay: 0.15s; height: 70%; }
+    .eq span:nth-child(3) { animation-delay: 0.3s; height: 100%; }
+    .eq span:nth-child(4) { animation-delay: 0.1s; height: 55%; }
+
+    .eq.is-paused span { animation-play-state: paused; opacity: 0.4; }
+
+    @keyframes bounce {
+      0%, 100% { transform: scaleY(0.45); }
+      50% { transform: scaleY(1); }
+    }
+
+    .now-playing h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      letter-spacing: 0.06em;
+      line-height: 1;
+    }
+
+    .now-playing p {
+      color: var(--mist);
+      font-size: 0.92rem;
+      margin-top: 0.2rem;
+    }
+
+    .track-controls {
+      margin-left: auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .track-controls button {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      border-radius: 999px;
+      padding: 0.55rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .hero-copy {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-copy h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 8vw, 4.5rem);
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      line-height: 0.95;
+    }
+
+    .hero-copy p {
+      margin-top: 0.75rem;
+      color: var(--mist);
+      font-size: 1.05rem;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.4rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (min-width: 900px) {
+      .video-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .video-card {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      border-radius: 0;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .video-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    .footer-cta {
+      text-align: center;
+      padding-top: 0.5rem;
+    }
+
+    .footer-cta p {
+      color: var(--mist);
+      margin-bottom: 1.1rem;
+    }
+
+    @media (max-width: 640px) {
+      .video-grid { grid-template-columns: 1fr; gap: 0.5rem; }
+      .now-playing { flex-wrap: wrap; }
+      .track-controls { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="gate" id="gate">
+    <div class="gate-brand">COACH SAM</div>
+   <button type="button" class="gate-btn" id="startMemories">Tap Me </button>
+  </div>
+
+  <main class="stage" id="stage">
+    <div class="now-playing">
+      <div class="eq is-paused" id="eq" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div>
+        <h1>Story of Okiemute</h1>
+        <p>Erigga ft. Graham D &amp; Kettle</p>
+      </div>
+      <div class="track-controls">
+        <button type="button" id="toggleMusic">Pause music</button>
+      </div>
+    </div>
+
+    <div class="hero-copy">
+      <h2>FOR COACH SAM</h2>
+    
+    </div>
+
+    <div class="video-grid" id="videoGrid">
+      <div class="video-card">
+        <video muted loop playsinline autoplay preload="auto" src="1001127995.mp4"></video>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline autoplay preload="auto" src="1001127996.mp4"></video>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline autoplay preload="auto" src="1001127997.mp4"></video>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline autoplay preload="auto" src="1001127998.mp4"></video>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline autoplay preload="auto" src="1001127999.mp4"></video>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline autoplay preload="auto" src="1001128000.mp4"></video>
+      </div>
+      <div class="video-card">
+        <video muted loop playsinline autoplay preload="auto" src="WhatsApp%20Video%202026-07-17%20at%205.20.29%20PM.mp4"></video>
+      </div>
+    </div>
+
+    <div class="footer-cta">
+      <p>When you're ready — one more thing.</p>
+      <a class="next-game" href="game4.html">Play Coach Sam</a>
+    </div>
+  </main>
+
+  <audio id="erigga" loop preload="auto">
+    <source src="Erigga-Ft-Graham-D-Kettle-Story-Of-Okiemute-(TrendySongz.com).mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const gate = document.getElementById('gate');
+    const stage = document.getElementById('stage');
+    const startBtn = document.getElementById('startMemories');
+    const music = document.getElementById('erigga');
+    const toggleMusic = document.getElementById('toggleMusic');
+    const eq = document.getElementById('eq');
+    const videos = Array.from(document.querySelectorAll('.video-card video'));
+
+    function playAllVideos() {
+      videos.forEach((video, i) => {
+        video.muted = true;
+        video.playsInline = true;
+        setTimeout(() => {
+          video.play().catch(() => {});
+        }, i * 120);
+      });
+    }
+
+    async function startExperience() {
+      gate.classList.add('is-gone');
+      stage.classList.add('is-live');
+
+      try {
+        await music.play();
+        eq.classList.remove('is-paused');
+        toggleMusic.textContent = 'Pause music';
+      } catch (e) {
+        eq.classList.add('is-paused');
+        toggleMusic.textContent = 'Play music';
+      }
+
+      playAllVideos();
+    }
+
+    startBtn.addEventListener('click', startExperience);
+
+    toggleMusic.addEventListener('click', async () => {
+      if (music.paused) {
+        try {
+          await music.play();
+          eq.classList.remove('is-paused');
+          toggleMusic.textContent = 'Pause music';
+        } catch (e) {}
+      } else {
+        music.pause();
+        eq.classList.add('is-paused');
+        toggleMusic.textContent = 'Play music';
+      }
+    });
+  </script>
+</body>
+</html>

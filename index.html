@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#09070f" />
+  <title>Happy Birthday, Cosmos Rume Ighoraye</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,620;1,9..144,500;1,9..144,620&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="song.js"></script>
+</head>
+<body>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header id="topbar">
+    <p>For Cosmos</p>
+    <button id="skip" type="button">Skip to Rume</button>
+  </header>
+  <p id="live" class="sr-only" aria-live="polite"></p>
+
+  <section id="scene-intro" class="scene">
+    <p class="kicker">Happy birthday</p>
+    <h1 aria-label="Cosmos Rume Ighoraye">
+      <span class="line line-1" id="line1">Cosmos</span>
+      <span class="line line-2" id="line2">Rume Ighoraye</span>
+    </h1>
+    <p class="dek">A sweetheart. The one who shows up. The one who pushes people toward their best selves.</p>
+    <button id="begin" class="gold-btn" type="button">Light the candles</button>
+  </section>
+
+  <section id="scene-cake" class="scene" aria-label="Birthday cake">
+    <div class="lights" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+
+    <div class="balloons" aria-hidden="true">
+      <div class="balloon b1"><span>Show up</span></div>
+      <div class="balloon b2"><span>Kind</span></div>
+      <div class="balloon b3"><span>Steady</span></div>
+      <div class="balloon b4"><span>Best</span></div>
+    </div>
+
+    <div class="cake-stage">
+      <div class="cake">
+        <div class="glow"></div>
+        <div class="tier top">
+          <div class="candles">
+            <div class="candle" style="--x: 14%; --h: 78px; --tilt: -6deg"><div class="flame"></div><div class="wax"></div></div>
+            <div class="candle" style="--x: 32%; --h: 98px; --tilt: 3deg"><div class="flame"></div><div class="wax"></div></div>
+            <div class="candle" style="--x: 50%; --h: 86px; --tilt: -2deg"><div class="flame"></div><div class="wax"></div></div>
+            <div class="candle" style="--x: 68%; --h: 108px; --tilt: 4deg"><div class="flame"></div><div class="wax"></div></div>
+            <div class="candle" style="--x: 86%; --h: 74px; --tilt: -3deg"><div class="flame"></div><div class="wax"></div></div>
+          </div>
+          <div class="frost">
+            <div class="drips"><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+        </div>
+        <div class="tier mid">
+          <div class="band"></div>
+          <div class="sprinkles" aria-hidden="true"></div>
+        </div>
+        <div class="tier base">
+          <div class="band cream"></div>
+        </div>
+        <div class="plate"></div>
+      </div>
+    </div>
+
+    <div class="wish-ui">
+      <button id="blow" type="button">
+        <svg viewBox="0 0 72 72" aria-hidden="true">
+          <circle class="ring-bg" cx="36" cy="36" r="30"></circle>
+          <circle id="ring" cx="36" cy="36" r="30"></circle>
+        </svg>
+        <span>Hold to blow</span>
+      </button>
+      <p class="wish-note">Make a wish, Cosmos.</p>
+    </div>
+
+    <div id="wish-done" class="wish-done">
+      <p>It’s out there</p>
+      <h2>Happy birthday</h2>
+    </div>
+  </section>
+
+  <section id="scene-letter" class="scene">
+    <article class="letter">
+      <p class="kicker rise">For the one who shows up</p>
+      <h2 class="rise">Cosmos Rume Ighoraye</h2>
+      <div class="rule rise"></div>
+      <div class="letter-body rise">
+        <p>There are people who are simply nice, and then there are people who walk into a room and somehow make everything feel a little lighter. You are one of those people.</p>
+        <p>You have this way of showing up for people that is difficult to explain. You check in. You encourage. You push. You notice when someone is not doing their best and somehow find a way to remind them that they are capable of more, without ever making them feel like they are not enough.</p>
+        <p>You genuinely want to see people win.</p>
+        <p>You celebrate people's growth. You challenge people when they need to be challenged. You give your time, your words, your energy, and sometimes even your patience, because you believe people can become better than where they are right now.</p>
+        <p>And somehow, you do all of this while still being you.</p>
+        <p>I hope you never underestimate the impact you have had on the people around you. Some of the things you have said may have felt like ordinary conversations to you, but someone else may have carried those words for years. Some encouragement you gave casually may have been exactly what someone needed to keep going.</p>
+        <p>But beyond everything I hope you know that you are deeply appreciated.</p>
+        <p class="bless">May this new chapter of your life be one that surprises you in the best possible ways.</p>
+        <p class="bless">May God go ahead of you into every room you enter, every opportunity you pursue, every decision you make, and every season you step into.</p>
+        <p class="bless">May He give you wisdom beyond your years and discernment to know what to accept, what to reject, what to pursue, and what to walk away from.</p>
+        <p class="bless">May you never have to force what God has already prepared for you.</p>
+        <p class="bless">May the right people find you. May genuine friendships surround you. May you be connected to people who celebrate you without competing with you, correct you without tearing you down, and love you without conditions.</p>
+        <p class="bless">May God protect your heart from disappointment that changes the way you love.</p>
+        <p class="bless">May He protect your mind from unnecessary worry, comparison, fear, and the pressure to have everything figured out.</p>
+        <p class="bless">Whenever you feel uncertain about the future, may you be reminded that your life is not behind schedule.</p>
+        <p class="bless">May you never look at someone else's journey and begin to question your own.</p>
+        <p class="bless">What is meant for you will find you in God's timing.</p>
+        <p class="bless">May every dream you have carried quietly begin to take shape.</p>
+        <p class="bless">May the ideas in your heart become realities.</p>
+        <p class="bless">May your efforts produce results.</p>
+        <p class="bless">May the doors you have been knocking on finally open.</p>
+        <p class="bless">And when those doors open, may you have the wisdom to recognize them.</p>
+        <p class="bless">May God bless the work of your hands.</p>
+        <p class="bless">May He increase you financially, professionally, spiritually, and personally.</p>
+        <p class="bless">May you never lack good people, good opportunities, good health, or the resources you need to fulfil your purpose.</p>
+        <p class="bless">May there be provision in places where you currently see uncertainty.</p>
+        <p class="bless">May there be clarity where there is confusion.</p>
+        <p class="bless">May there be peace where there has been anxiety.</p>
+        <p class="bless">May there be restoration where there has been disappointment.</p>
+        <p class="bless">May there be joy that does not depend on circumstances.</p>
+        <p class="bless">May God give you strength for the responsibilities that come with the next level of your life.</p>
+        <p>Because we pray that you will not only enter bigger rooms, but that you will have the capacity to thrive in them.</p>
+        <p class="bless">May you become everything God created you to be.</p>
+        <p class="bless">May your life continue to speak for you even when you are not in the room.</p>
+        <p class="bless">May the people you have helped become part of the testimony of your life.</p>
+        <p class="bless">May you look back one day and realize that the little things you thought did not matter actually mattered more than you knew.</p>
+        <p class="bless">May you have many reasons to laugh.</p>
+        <p class="bless">May you have people who genuinely make you happy.</p>
+        <p class="bless">May you experience love that feels safe, friendship that feels like home, and family moments that you will remember for years.</p>
+        <p class="bless">May God keep you from relationships that drain you and lead you toward relationships that help you grow.</p>
+        <p class="bless">May He give you the courage to leave anything that no longer serves His purpose for your life.</p>
+        <p class="bless">May you never settle simply because something is available.</p>
+        <p class="bless">May you have the patience to wait for what is right.</p>
+        <p class="bless">And when you make mistakes, may you have the grace to forgive yourself, learn, grow, and keep moving.</p>
+        <p class="bless">May this year bring you closer to God.</p>
+        <p class="bless">May your faith become stronger.</p>
+        <p class="bless">May your prayers become deeper.</p>
+        <p class="bless">May you hear God's direction clearly and have the courage to follow it even when it does not make sense to everyone else.</p>
+        <p class="bless">May God keep you humble when things are going well and keep you hopeful when things are difficult.</p>
+        <p class="bless">May He preserve you.</p>
+        <p class="bless">May He keep you from harm.</p>
+        <p class="bless">May He protect you when you travel, when you work, when you rest, and when you are simply going about your everyday life.</p>
+        <p class="bless">May His hand remain upon you.</p>
+        <p class="bless">May His favour speak for you.</p>
+        <p class="bless">May His mercy surround you.</p>
+        <p class="bless">May His grace sustain you.</p>
+        <p class="bless">And may you live long enough to see the fulfilment of the things you have prayed about, cried about, worked for, and believed for.</p>
+        <p>Most importantly, may you never forget that your life is a gift.</p>
+        <p>You are here for a reason.</p>
+        <p>You are loved.</p>
+        <p>You are needed.</p>
+        <p>You are making an impact, even in ways you may not see yet.</p>
+        <p>And I pray that the years ahead will make that even clearer to you.</p>
+        <p class="bless">May this be the beginning of one of the most beautiful seasons of your life.</p>
+        <p class="bless">May you have stories you cannot wait to tell.</p>
+        <p class="bless">May you have testimonies that leave you speechless.</p>
+        <p class="bless">May you have blessings that make you say, <em>“God, I couldn't have planned this better.”</em></p>
+        <p>And when you get to those places you've been praying for, I hope you remember everyone who stood with you along the way.</p>
+        <p class="birthday-line">Happy birthday, <strong>Cosmos Rume Ighoraye.</strong></p>
+        <p class="keep">Keep being the person who shows up.</p>
+        <p class="keep">Keep lifting people.</p>
+        <p class="keep">Keep laughing.</p>
+        <p class="keep">Keep loving.</p>
+        <p class="keep">Keep growing.</p>
+        <p class="keep">And please, never stop being you.</p>
+        <p class="sign">From the people you keep lifting. ♥</p>
+      </div>
+      <button id="openReel" class="gold-btn rise" type="button">See the pictures</button>
+    </article>
+  </section>
+
+  <section id="scene-reel" class="scene" aria-label="Pictures and video of Rume">
+    <div class="film" id="film" tabindex="0">
+      <div class="track" id="track"></div>
+    </div>
+    <div class="reel-actions">
+      <button id="playRume" class="gold-btn" type="button">Play Rume</button>
+      <button id="reelBack" class="text-btn" type="button">Back to the candles</button>
+    </div>
+  </section>
+
+  <div id="lightbox" hidden>
+    <button id="lightboxClose" type="button" class="text-btn">Close</button>
+    <img id="lightboxImg" alt="">
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

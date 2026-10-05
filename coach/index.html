@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Happy Birthday Coach Sam</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="loading.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Signika:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #e8b84a;
+      --gold-soft: #f4d98a;
+      --ink: #070b14;
+    }
+
+    body {
+      background: #070b14 !important;
+      overflow-x: hidden;
+    }
+
+    body.peach,
+    body.peach-after {
+      background-color: #1a2435 !important;
+      background-image:
+        radial-gradient(ellipse at top, rgba(255, 180, 90, 0.35), transparent 55%),
+        linear-gradient(180deg, #2a1f18 0%, #1a2435 100%) !important;
+      animation: none !important;
+    }
+
+    .container {
+      display: none;
+      padding-bottom: 140px;
+      min-height: 100vh;
+    }
+
+    .stage-wrap {
+      position: relative;
+      z-index: 5;
+      padding-top: 10px;
+    }
+
+    /* Keep balloons BELOW letter overlay, ABOVE background */
+    .balloons {
+      z-index: 40 !important;
+    }
+
+    .balloon-border {
+      z-index: 30;
+    }
+
+    /* Cake needs room above the fixed button */
+    .cake-cover {
+      margin-top: 30px;
+      margin-bottom: 40px;
+      min-height: 320px;
+      position: relative;
+      z-index: 20;
+    }
+
+    .cake {
+      position: relative !important;
+      left: auto !important;
+      margin: 20px auto 0 !important;
+      display: none;
+    }
+
+    .bannar {
+      position: relative;
+      z-index: 15;
+      max-width: 90%;
+    }
+
+    .birthday-marquee {
+      position: relative;
+      z-index: 25;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-align: center;
+      padding: 8px 12px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    }
+
+    /* Bottom CTA — never covers cake */
+    .control-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      background: linear-gradient(to top, rgba(7,11,20,0.96) 55%, transparent);
+      border: none;
+      min-height: 0;
+      padding: 28px 16px 22px;
+      margin: 0;
+    }
+
+    .cta-btn,
+    .btn-primary {
+      border: none !important;
+      border-radius: 999px !important;
+      padding: 14px 28px !important;
+      font-family: 'Bebas Neue', sans-serif !important;
+      font-size: 1.35rem !important;
+      letter-spacing: 0.12em !important;
+      text-transform: none !important;
+      color: #111 !important;
+      background: linear-gradient(180deg, var(--gold-soft), var(--gold)) !important;
+      box-shadow: 0 12px 32px rgba(232, 184, 74, 0.35) !important;
+    }
+
+    .cta-btn:hover,
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+      background: var(--gold-soft) !important;
+      color: #111 !important;
+      border: none !important;
+    }
+
+    #play, #bannar_coming, #balloons_flying, #cake_fadein,
+    #light_candle, #wish_message, #story, #nextButton {
+      display: none;
+    }
+
+    /* Hide old in-flow message — we use full-screen letter instead */
+    .message { display: none !important; }
+
+    /* FULL SCREEN LETTER — balloons cannot sit on this */
+    #letterOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -10%, rgba(232, 184, 74, 0.22), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 100% 100%, rgba(40, 100, 160, 0.22), transparent 50%),
+        #070b14;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease, visibility 0.7s;
+      padding: 3rem 1.25rem 3rem;
+    }
+
+    #letterOverlay.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .letter-panel {
+      width: min(620px, 100%);
+      margin: 6vh auto 0;
+    }
+
+    .letter-panel .eyebrow {
+      text-align: center;
+      font-size: 0.75rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(232, 184, 74, 0.9);
+      margin-bottom: 0.85rem;
+      font-family: 'Instrument Sans', sans-serif;
+    }
+
+    .letter-panel h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.8rem, 15vw, 7rem);
+      letter-spacing: 0.05em;
+      line-height: 0.88;
+      text-align: center;
+      color: var(--gold);
+      margin: 0 0 0.5rem;
+      text-shadow: 0 0 70px rgba(232, 184, 74, 0.3);
+    }
+
+    .letter-panel .sub {
+      text-align: center;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 1.75rem;
+      font-family: 'Instrument Sans', sans-serif;
+    }
+
+    .letter-panel .rule {
+      width: 64px;
+      height: 2px;
+      margin: 0 auto 1.75rem;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .letter-panel p {
+      font-family: 'Instrument Sans', sans-serif;
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 1.15rem;
+      text-align: left;
+      width: 100%;
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    .letter-panel .sign {
+      text-align: right;
+      color: var(--gold);
+      font-family: Georgia, serif;
+      font-style: italic;
+      margin-top: 1.75rem;
+      font-size: 1.2rem;
+    }
+
+    .letter-panel .verse {
+      margin: 1.75rem 0;
+      padding: 1.25rem 1.35rem;
+      border-left: 3px solid var(--gold);
+      background: rgba(232, 184, 74, 0.08);
+      color: rgba(255, 255, 255, 0.92);
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .letter-panel .verse span {
+      display: block;
+      margin-top: 0.75rem;
+      font-style: normal;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-family: 'Instrument Sans', sans-serif;
+    }
+
+    .letter-panel .next {
+      display: block;
+      width: fit-content;
+      margin: 2.5rem auto 1rem;
+      text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.12em;
+      padding: 1rem 2.2rem;
+      border-radius: 999px;
+      color: #111;
+      background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+      box-shadow: 0 12px 32px rgba(232, 184, 74, 0.35);
+    }
+
+    /* Cake CSS (from original) */
+    .cake {
+      width: 300px;
+      height: 300px;
+    }
+    .cake:after {
+      background: #ffffff;
+      border-radius: 300px;
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 300px;
+      height: 6px;
+    }
+    .velas {
+      background: #ffffff;
+      border-radius: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-left: -7.5px;
+      margin-top: -25px;
+      width: 15px;
+      height: 50px;
+    }
+    .velas:after, .velas:before {
+      background: rgba(255, 0, 0, 0.4);
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 6.66666667px;
+    }
+    .velas:after { top: 25%; left: 0; }
+    .velas:before { top: 45%; left: 0; }
+    .fuego {
+      display: none;
+      border-radius: 100%;
+      box-shadow: 0 0 40px 10px rgba(248, 233, 209, 0.2);
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      margin-left: -10px;
+      width: 20px;
+      height: 37.5px;
+    }
+    .fuego:nth-child(1) { animation: fuego 2s infinite; }
+    .fuego:nth-child(2) { animation: fuego 1.5s infinite; }
+    .fuego:nth-child(3) { animation: fuego 1s infinite; }
+    .fuego:nth-child(4) { animation: fuego 0.5s infinite; }
+    .fuego:nth-child(5) { animation: fuego 0.2s infinite; }
+    @keyframes fuego {
+      0% { background: rgba(254, 248, 97, 0.5); transform: translateY(0) scale(1); }
+      50% { background: rgba(255, 50, 0, 0.1); transform: translateY(-60px) scale(0); }
+      100% { background: rgba(254, 248, 97, 0.5); transform: translateY(0) scale(1); }
+    }
+    .cobertura {
+      background: #ece7e3;
+      border-radius: 150px;
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      margin-left: -83.33333333px;
+      margin-top: -15px;
+      width: 166.66666667px;
+      height: 37.5px;
+      z-index: 10;
+    }
+    .cobertura:after, .cobertura:before {
+      background: #ece7e3;
+      border-radius: 300px;
+      content: "";
+      position: absolute;
+      width: 15px;
+      height: 30px;
+    }
+    .cobertura:after { top: 20px; right: 42.85714286px; }
+    .cobertura:before { top: 30px; right: 27.27272727px; }
+    .bizcocho {
+      background: #6d3826;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      margin-left: -75px;
+      width: 150px;
+      height: 100px;
+    }
+    .bizcocho:after, .bizcocho:before {
+      background: rgba(236, 231, 227, 0.6);
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 15px;
+    }
+    .bizcocho:after { top: 30%; left: 0; }
+    .bizcocho:before { top: 60%; left: 0; }
+
+    .balloons h4 {
+      display: block !important;
+      font-family: 'Signika', sans-serif !important;
+      font-size: 15px !important;
+      font-weight: 700 !important;
+      line-height: 1.05 !important;
+      margin: 46px 4px 0 !important;
+      color: #ffffff !important;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+      -webkit-text-stroke: 1px rgba(0, 0, 0, 0.65);
+      text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000,
+        0 2px 6px rgba(0, 0, 0, 0.9);
+    }
+
+    #b2 h4, #b22 h4 {
+      font-size: 12px !important;
+    }
+
+    @media (max-width: 640px) {
+      .cake-cover { min-height: 240px; margin-top: 10px; }
+      .cake { transform: scale(0.65); transform-origin: center top; }
+      .container { padding-bottom: 170px; }
+      .bulb-holder { height: 56px; }
+      .bulb { width: 36px; height: 36px; background-size: 36px 36px; }
+      .cta-btn, .btn-primary {
+        width: 92% !important;
+        max-width: 320px;
+        font-size: 1.15rem !important;
+        padding: 12px 18px !important;
+      }
+      .letter-panel { margin-top: 3vh; }
+      .letter-panel h1 { font-size: clamp(3rem, 18vw, 4.5rem); }
+      .letter-panel p { font-size: 0.98rem; }
+      .birthday-marquee { font-size: 1.1rem; }
+      .balloons {
+        width: 72px !important;
+        height: 132px !important;
+        background-size: 72px 132px !important;
+      }
+      .balloons h4 {
+        font-size: 11px !important;
+        margin-top: 34px !important;
+      }
+      #b2 h4, #b22 h4 { font-size: 9px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading"></div>
+
+  <audio class="song" controls loop>
+    <source src="hbd.mp3">
+  </audio>
+
+  <!-- YOUR balloons -->
+  <div class="balloons text-center" id="b1"><h4>Happy</h4></div>
+  <div class="balloons text-center" id="b2"><h4>Birthday</h4></div>
+  <div class="balloons text-center" id="b3"><h4>Coach</h4></div>
+  <div class="balloons text-center" id="b4"><h4>Sam</h4></div>
+  <div class="balloons text-center" id="b5"><h4>The</h4></div>
+  <div class="balloons text-center" id="b6"><h4>Goat</h4></div>
+  <div class="balloons text-center" id="b7"><h4>!</h4></div>
+
+  <div id="colormarq" class="birthday-marquee">Happy Birthday Coach Sam</div>
+  <img src="Balloon-Border.png" width="100%" class="balloon-border" alt="">
+
+  <div class="container">
+    <div class="stage-wrap">
+      <!-- YOUR lights -->
+      <div class="row">
+        <div class="col-md-2 col-xs-2 bulb-holder"><div class="bulb" id="bulb_yellow"></div></div>
+        <div class="col-md-2 col-xs-2 bulb-holder"><div class="bulb" id="bulb_red"></div></div>
+        <div class="col-md-2 col-xs-2 bulb-holder"><div class="bulb" id="bulb_blue"></div></div>
+        <div class="col-md-2 col-xs-2 bulb-holder"><div class="bulb" id="bulb_green"></div></div>
+        <div class="col-md-2 col-xs-2 bulb-holder"><div class="bulb" id="bulb_pink"></div></div>
+        <div class="col-md-2 col-xs-2 bulb-holder"><div class="bulb" id="bulb_orange"></div></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <img src="banner.png" class="bannar" alt="Happy Birthday">
+        </div>
+      </div>
+
+      <!-- Cake ABOVE the button area -->
+      <div class="row cake-cover">
+        <div class="col-md-12 text-center">
+          <div class="cake">
+            <div class="velas">
+              <div class="fuego"></div>
+              <div class="fuego"></div>
+              <div class="fuego"></div>
+              <div class="fuego"></div>
+              <div class="fuego"></div>
+            </div>
+            <div class="cobertura"></div>
+            <div class="bizcocho"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar navbar-fixed-bottom control-bar">
+      <div class="row">
+        <div class="col-md-8 text-center col-md-offset-2 col-xs-12">
+          <button class="btn btn-primary cta-btn" id="turn_on">Turn On Lights</button>
+          <button class="btn btn-primary cta-btn" id="play">Play Birthday Song</button>
+          <button class="btn btn-primary cta-btn" id="bannar_coming">Let's Decorate</button>
+          <button class="btn btn-primary cta-btn" id="balloons_flying">Fly With Balloons</button>
+          <button class="btn btn-primary cta-btn" id="cake_fadein">Most Delicious Cake Ever</button>
+          <button class="btn btn-primary cta-btn" id="light_candle">Light Candle</button>
+          <button class="btn btn-primary cta-btn" id="wish_message">Happy Birthday Coach Sam</button>
+          <button class="btn btn-primary cta-btn" id="story">A message for you</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Letter on its own full-screen layer — balloons never touch this -->
+  <div id="letterOverlay" aria-hidden="true">
+    <div class="letter-panel">
+      <p class="eyebrow">A letter for you</p>
+      <h1>COACH SAM</h1>
+      <p class="sub">Happy Birthday, Boss</p>
+      <div class="rule"></div>
+
+      <p>Hi Coach,</p>
+      <p>Good afternoon/evening, whenever you see this. Happy birthday, boss.</p>
+      <p>I know we just met, and honestly, we might not know each other all that well yet. But I am so grateful for the gift of you. You have no idea how much you've impacted my life in just these few months.</p>
+      <p>I was talking to my brother the other day, and he asked me what's one thing I've really learned in the last two months. The first thing that came out of my mouth was consistency, discipline, and being a man of my word. And I can say with my whole chest that I learned that from you.</p>
+      <p>I honestly don't know how one person can be so calm, so patient, so kind, and so steady all at once. Every single time. No matter what. You make it look easy, and I know it isn't.</p>
+      <p>But more than anything, thank you for helping me start to love my body. That's something I've struggled with for God knows how long, and for the first time, I actually don't feel bad about the way I look. I don't think you'll ever fully understand what that means to me, but I need you to know it's one of the greatest gifts anyone has ever given me. You didn't just train me. You gave me a piece of myself back.</p>
+      <p>Thank you for every single thing. For showing up the way you do, for the patience you don't get thanked enough for, for the quiet consistency that's rubbing off on me whether I notice it in the moment or not.</p>
+      <p>So today, I pray for you the way you've shown up for me and for everyone around you.</p>
+      <p>I pray that the same grace, patience, and care you pour into people finds its way back to you tenfold. I pray that in your moments of need, God shows up for you the way you show up for others, without hesitation and without fail. I pray that every seed you've planted in someone else's life — every ounce of patience, every word of encouragement, every quiet act of showing up — comes back to you multiplied, in ways you don't even see coming.</p>
+      <p>I pray for your strength when you're tired and nobody knows it. I pray for your peace when the weight of holding everyone else together gets heavy. I pray that your joy is full, that your health is strong, and that your path ahead is lighter than you expect it to be. I pray that you never have to carry alone what you so freely help others carry.</p>
+      <p class="verse">"Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths."<br><span>Proverbs 3:5-6</span></p>
+      <p>I pray that verse over you, Coach, that every path you walk is directed, every effort you pour out is honored, and every hope you carry is met. You get every single thing you've ever hoped for, and then some.</p>
+      <p>Happy birthday, Coach. Thank you for being exactly who you are.</p>
+      <p class="sign">Amen.</p>
+      <p class="sign">With love,<br>Your favorite student</p>
+
+      <a class="next" href="memories.html">Next: Workout</a>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="effect.js"></script>
+</body>
+</html>
